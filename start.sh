@@ -1,18 +1,8 @@
 #!/bin/bash
 
-echo "CWD:"`pwd` > /tmp/log
-echo "LD_LIBRARY_PATH:$LD_LIBRARY_PATH" >> /tmp/log
-
-
 ./softplc &
 
 discovery docker-container eth0
 
-/usr/sbin/sshd -D &
-
-# Wait for any process to exit
-wait -n
-
-# Exit with status of process that exited first
-exit $?
-
+# we use tini to occupy PID 1, so flush this bash executable when launching sshd with exec
+exec /usr/sbin/sshd -D

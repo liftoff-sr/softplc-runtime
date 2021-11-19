@@ -5,7 +5,8 @@ PORT_SSH=55666
 PORT_REMOTE_EDIT=55667
 PORT_REMOTE_UPLOAD=55668
 
-docker run -d \
+docker run --init \
+	-d \
 	--rm \
 	--name $MACHINE_NAME \
 	--hostname $MACHINE_NAME \
@@ -14,7 +15,7 @@ docker run -d \
 	-p $PORT_REMOTE_UPLOAD:2223 \
 	-p 2223:2223/udp \
 	--cap-add SYS_NICE \
-	--cap-add CAP_SYS_RESOURCE \
+	--cap-add SYS_RESOURCE \
 	softplc/runtime
 
 

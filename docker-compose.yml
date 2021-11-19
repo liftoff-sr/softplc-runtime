@@ -1,0 +1,22 @@
+
+# see https://docs.docker.com/compose/compose-file/compose-file-v3/
+# see https://github.com/compose-spec/compose-spec/blob/master/spec.md
+
+version: "3.9"
+services:
+  runtime:
+    image: softplc/runtime
+    init: true
+    mac_address: "02:02:02:02:02:02"
+    ports:
+      - "5022:22"
+      - "5222:2222"
+      - "5223:2223"
+      - "5223:2223/udp"
+    volumes:
+      # mount host's app directory in place of container's
+      - /home/SoftPLC/app:/SoftPLC/app
+      - /home/SoftPLC/plc/DEFAULT:/SoftPLC/cfg
+    cap_add:
+      - SYS_NICE
+      - SYS_RESOURCE
