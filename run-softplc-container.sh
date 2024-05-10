@@ -1,6 +1,10 @@
+# A script which operates at a lower level than "docker compose".  This is
+# not used any more since docker compose is the way to go.
+
 MACHINE_NAME=splc-container
 
-# configure these exposed ports for the softplc-runtime container
+# configure these exposed ports for the softplc-runtime container, then be
+# sure and match them in the Topdoc NexGen configuration for this virtual PLC.
 PORT_SSH=55666
 PORT_REMOTE_EDIT=55667
 PORT_REMOTE_UPLOAD=55668

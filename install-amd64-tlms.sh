@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Here we:
+
+# 1) install all the standard TLMs for an amd64 machine
+
+# 2) create a /SoftPLC/cfg directory and move all TLM configuration files
+# and all ONE configuration files and STARTUP.LST and MODULE.LST files into
+# /SoftPLC/cfg/.
+# In their original locations symlinks are created pointing to the corresponding
+# actual file in /SoftPLC/cfg.  This lets us move configuration files onto the
+# host while leaving the TLM executables in the container.  A bind mount
+# is used on the container's /SoftPLC/cfg directory to maintain the configuration
+# files on the host instead of the container.
+
+
 pkgs="\
   tlm-comgenius \
   tlm-dtdisk \

@@ -1,0 +1,29 @@
+# This is a settings file for a softplc test environment
+# Note the symlink to this file from .env file.
+
+# SUBNET is the docker internal subnet for containers
+SUBNET=10.10.0.0/16
+
+GATEWAY=10.10.0.1
+
+PLC_1ST_IP=10.10.0.11
+PLC_2ND_IP=10.10.0.12
+
+PLC_1ST_NAME=FIRST
+PLC_2ND_NAME=SECON
+
+# By using the same BASE_DIR as the linux version of Topdoc NexGen, a person
+# with linux NexGen installed can edit SOFTPLC.APP files and do TLM config edits
+# off-line, but because of the container volume mappings, these off line storage
+# locations become the runtime storage directories for the containers.
+
+BASE_DIR=/home/SoftPLC/app   # normal for linux Topdoc NexGen data files, change freely
+
+# APP_DIR is a place on the host to store directories containing SOFTPLC.APP files.
+# This one exposes the same directory used by a linux installation of Topdoc NexGen:
+APP_DIR=${BASE_DIR}/app
+
+# CFG_DIR is a place on the host to store TLM configuration files for a specific
+# container runtime instance
+CFG_1ST_DIR=${BASE_DIR}/plc/${PLC_1ST_NAME}
+CFG_2ND_DIR=${BASE_DIR}/plc/${PLC_2ND_NAME}

@@ -1,0 +1,81 @@
+# Launch a couple of SoftPLCs into a subnet using the bridge driver.
+# In this scenario the host acts as a router into this subnet.
+# Another way to do this is to have each PLC using separate EXPOSEd host ports
+# on the host's common IP address, and then configure NexGen to use those
+# non-standard ports for each PLC.
+
+# See settings.txt file (symlinked to .env) for the ${} settings.
+# Use "$ docker compose config" to see the substituted result.
+
+version: "3.9"
+
+networks:
+  dock_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${SUBNET}
+          gateway: ${GATEWAY}
+
+services:
+  first:
+    image: softplc/runtime
+    #container_name: softplc_alplha
+    build: .
+
+    # use tini
+    init: true
+#    environment:
+#      APP_NAME: ${APP_1ST_NAME}
+
+
+    #mac_address: "02:02:02:02:02:11"
+#    ports:
+#      - "${PORT_SSH:-50022}:22"
+#      - "${PORT_REMOTE_EDIT:-52222}:2222"
+#      - "${PORT_REMOTE_UPLOAD:-52223}:2223"
+#      - "5223:2223/udp"
+    volumes:
+      # mount host's app directory in place of container's
+      - ${APP_DIR}:/SoftPLC/app
+
+      # mount host's specific plc directory in place of container's cfg directory
+      - ${CFG_1ST_DIR}:/SoftPLC/cfg
+    networks:
+      dock_net:
+        ipv4_address: ${PLC_1ST_IP}
+
+    cap_add:
+      - SYS_NICE
+      - SYS_RESOURCE
+
+  second:
+    image: softplc/runtime
+    #container_name: softplc_beta
+
+    # use tini
+    init: true
+#    environment:
+#      APP_NAME: ${APP_2ND_NAME}
+
+    #mac_address: "02:02:02:02:02:12"
+#    ports:
+#      - "${PORT_SSH:-60022}:22"
+#      - "${PORT_REMOTE_EDIT:-62222}:2222"
+#      - "${PORT_REMOTE_UPLOAD:-62223}:2223"
+#      - "5223:2223/udp"
+
+    networks:
+      dock_net:
+        ipv4_address: ${PLC_2ND_IP}
+
+    volumes:
+      # mount host's app directory in place of container's
+      - ${APP_DIR}:/SoftPLC/app
+
+      # mount host's specific plc directory in place of container's cfg directory
+      - ${CFG_2ND_DIR}:/SoftPLC/cfg
+    cap_add:
+      - SYS_NICE
+      - SYS_RESOURCE
+
