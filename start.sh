@@ -10,10 +10,8 @@ if [[ -z "${LD_LIBRARY_PATH}" ]]; then
 fi
 
 
-./softplc &
-
 discovery docker-container eth0
 
-# we use compose.yml "init: true" (tini) to occupy PID 1, so flush this bash
-# executable when launching sshd with exec
-exec /usr/sbin/sshd -D
+/usr/sbin/sshd -D -e  &
+
+exec ./softplc
