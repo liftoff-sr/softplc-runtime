@@ -25,9 +25,6 @@ services:
 
     # use tini
     init: true
-#    environment:
-#      APP_NAME: ${APP_1ST_NAME}
-
 
     #mac_address: "02:02:02:02:02:11"
 #    ports:
@@ -49,14 +46,16 @@ services:
       - SYS_NICE
       - SYS_RESOURCE
 
+    # this causes stdout logging to show up immediately
+    tty: true
+
+
   second:
     image: softplc/runtime
     #container_name: softplc_beta
 
     # use tini
     init: true
-#    environment:
-#      APP_NAME: ${APP_2ND_NAME}
 
     #mac_address: "02:02:02:02:02:12"
 #    ports:
@@ -79,3 +78,5 @@ services:
       - SYS_NICE
       - SYS_RESOURCE
 
+    # this causes stdout logging to show up immediately
+    tty: true
